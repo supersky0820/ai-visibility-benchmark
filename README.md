@@ -1,5 +1,11 @@
 # AI Search Visibility of 101 SaaS Brands — Measured on Perplexity
 
+![Data License](https://img.shields.io/badge/data%20license-CC%20BY%204.0-blue)
+![Dataset](https://img.shields.io/badge/dataset-101%20SaaS%20brands-green)
+![Citations](https://img.shields.io/badge/citations-2%2C469-orange)
+![Engine](https://img.shields.io/badge/measured%20on-Perplexity-blueviolet)
+[![Cite this dataset](https://img.shields.io/badge/cite-this%20dataset-brightgreen)](#how-to-cite)
+
 Open dataset: how often an AI answer engine cites 101 established SaaS brands when buyers ask about them — measured on **Perplexity (sonar)**, July 2026. 2,469 structured citations across 303 buyer-style queries, published as an **anonymous aggregate** (no per-brand results, no rankings).
 
 - **Interactive version:** [trirankai.com/data/ai-visibility-benchmark](https://trirankai.com/data/ai-visibility-benchmark)
