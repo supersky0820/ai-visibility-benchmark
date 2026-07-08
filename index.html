@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Search Visibility of 101 SaaS Brands — Measured on Perplexity | TriRank Data</title>
+<meta name="description" content="Open dataset: how often an AI answer engine cites 101 SaaS brands on brand, reviews and alternatives queries — measured on Perplexity (sonar), July 2026. Anonymous aggregate; 2,469 structured citations.">
+<style>
+  :root{
+    --brand:#1E48C8; --brand-dark:#16368f;
+    --ink:#0f172a; --ink-2:#334155; --muted:#64748b; --faint:#94a3b8;
+    --bg:#ffffff; --bg-subtle:#f8fafc; --bg-muted:#f1f5f9; --border:#e2e8f0;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink-2);background:var(--bg);line-height:1.6;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
+  a{color:var(--brand)}
+  h1,h2,h3{color:var(--ink);line-height:1.25;letter-spacing:-0.01em}
+  h2{font-size:1.6rem;margin-bottom:.6rem}
+  section{padding:48px 0;border-bottom:1px solid var(--border)}
+  .eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+  .lede{color:var(--muted);font-size:1.05rem;max-width:46rem;margin-top:.6rem}
+  .meta-line{margin-top:14px;font-size:.8rem;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .note{margin-top:20px;max-width:46rem;background:var(--bg-muted);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;font-size:.9rem}
+  .note strong{color:var(--ink)}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:8px}
+  .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);padding:18px}
+  .card .big{font-size:2.1rem;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums}
+  .card p{margin-top:6px;font-size:.85rem;color:var(--muted);line-height:1.45}
+
+  .bars{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+  .bar-row{display:flex;align-items:center;gap:12px}
+  .bar-label{flex:0 0 200px;font-size:.9rem}
+  .bar-track{flex:1;height:10px;background:var(--bg-muted);border-radius:999px;overflow:hidden}
+  .bar-fill{height:100%;background:var(--brand);border-radius:999px}
+  .bar-val{flex:0 0 110px;text-align:right;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  .bar-val strong{color:var(--ink)}
+
+  .gap-flex{display:flex;gap:24px;align-items:center;margin-top:22px;flex-wrap:wrap}
+  .gap-stat{border:1px solid var(--border);background:var(--bg-muted);border-radius:var(--radius);padding:22px 30px;text-align:center}
+  .gap-stat .big{font-size:3rem;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+  .gap-stat p{font-size:.75rem;color:var(--muted);max-width:200px;margin:6px auto 0}
+  .gap-body{flex:1;min-width:280px;max-width:560px}
+  .gap-body p+p{margin-top:10px}
+
+  .tbl-wrap{overflow-x:auto;margin-top:22px}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:560px}
+  th{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--border)}
+  td{padding:9px 12px 9px 0;border-bottom:1px solid var(--border);vertical-align:middle}
+  td.host,td.cat{font-weight:600;color:var(--ink)}
+  td .mini-track{display:inline-block;width:110px;height:8px;background:var(--bg-muted);border-radius:999px;overflow:hidden;vertical-align:middle;margin-right:10px}
+  td .mini-fill{display:block;height:100%;background:var(--brand);border-radius:999px}
+  td .num{font-variant-numeric:tabular-nums}
+  .tbl-note{margin-top:10px;font-size:.78rem;color:var(--muted)}
+
+  .grid-2{display:grid;grid-template-columns:1fr;gap:18px;margin-top:22px}
+  @media(min-width:760px){.grid-2{grid-template-columns:1fr 300px}}
+  .slot-card{border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+  .slot-card h3{font-size:.95rem;margin-bottom:10px}
+  .slot-card ol{list-style:none}
+  .slot-card li{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;padding:4px 0}
+  .slot-card li .rank{color:var(--faint);margin-right:8px;font-variant-numeric:tabular-nums}
+  .slot-card li strong{font-variant-numeric:tabular-nums;color:var(--ink)}
+
+  .metric-box{margin-top:26px;border:1px solid var(--border);border-left:4px solid var(--brand);border-radius:var(--radius);padding:18px 20px;background:var(--bg-subtle);font-size:.92rem}
+  .metric-box h3{font-size:1rem;margin-bottom:8px}
+  .metric-box p+p{margin-top:8px}
+
+  .methodology p+p{margin-top:10px}
+  .methodology{max-width:46rem}
+
+  footer{padding:36px 0 60px;font-size:.9rem;color:var(--muted)}
+  footer .links{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px}
+  footer a{font-weight:600}
+  @media(max-width:600px){
+    .bar-label{flex-basis:120px;font-size:.8rem}
+    .bar-val{flex-basis:86px;font-size:.78rem}
+    h2{font-size:1.35rem}
+  }
+</style>
+</head>
+<body>
+
+<section class="wrap" id="top">
+  <span class="eyebrow">TriRank Data · Open Dataset</span>
+  <h1 style="font-size:2.1rem;margin-top:10px;max-width:44rem">AI Search Visibility of 101 SaaS Brands — Measured on Perplexity</h1>
+  <p class="lede">We asked an AI answer engine about 101 SaaS brands across 23 categories — the brand itself, its reviews, and its alternatives — and recorded which sources it actually cited. This is the anonymous, aggregate picture of AI search visibility in mid-2026.</p>
+  <p class="meta-line" id="meta-line"></p>
+  <div class="note"><strong>Anonymous by design:</strong> this benchmark publishes aggregate numbers only. No per-brand results are released and no brands are ranked — the point is how the AI recommendation mechanism behaves, not who wins.</div>
+</section>
+
+<section class="wrap">
+  <div class="cards" id="stat-cards"></div>
+</section>
+
+<section class="wrap">
+  <h2>The visibility slope: AI knows you — until money is on the line</h2>
+  <p class="lede" id="slope-body"></p>
+  <div class="bars" id="slope-bars"></div>
+</section>
+
+<section class="wrap">
+  <h2 id="gap-title"></h2>
+  <div class="gap-flex">
+    <div class="gap-stat">
+      <div class="big" id="gap-big"></div>
+      <p id="gap-stat-label"></p>
+    </div>
+    <div class="gap-body">
+      <p id="gap-body1"></p>
+      <p>Being well-known is not enough. AI assembles alternatives answers from third-party comparison content — community threads, listicles, review platforms — and a brand that is absent from those surfaces is absent from the answer, no matter how big its name is.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>How many queries does a brand actually win?</h2>
+  <p class="lede" id="dist-body"></p>
+  <div class="bars" id="dist-bars"></div>
+</section>
+
+<section class="wrap">
+  <h2>Coverage is wildly uneven across categories</h2>
+  <p class="lede" id="cat-body"></p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Category</th><th>Brands sampled</th><th>Avg visibility score</th><th>Cited on alternatives</th></tr></thead>
+      <tbody id="cat-rows"></tbody>
+    </table>
+  </div>
+  <p class="tbl-note" id="cat-note"></p>
+</section>
+
+<section class="wrap">
+  <h2>Where AI actually looks: Reddit and YouTube dominate</h2>
+  <p class="lede" id="src-body"></p>
+  <div class="grid-2">
+    <div class="tbl-wrap" style="margin-top:0">
+      <table>
+        <thead><tr><th>Source</th><th>Share of all citations (share%)</th><th>Cited for # brands</th><th>brands%</th></tr></thead>
+        <tbody id="src-rows"></tbody>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px" id="slot-cards"></div>
+  </div>
+  <p class="tbl-note" id="src-note"></p>
+
+  <div class="metric-box">
+    <h3>brands% vs share% — two lenses, not interchangeable</h3>
+    <p><strong>brands%</strong> = coverage breadth: the number of brands (out of 101) for which a source was cited at least once, ÷ 101. Derived from the raw count in <code>sources.top[].brands</code>.</p>
+    <p><strong>share%</strong> = citation share: a source's citations ÷ all citations. Stored directly in <code>sources.top[].share</code>.</p>
+    <p id="metric-example"></p>
+  </div>
+</section>
+
+<section class="wrap methodology">
+  <h2>Methodology</h2>
+  <p id="meth-p1"></p>
+  <p id="meth-p2"></p>
+  <p>Honesty rules: failed calls are recorded as unknown and excluded from every denominator — never counted as "not cited". In this run, all brands completed all three queries.</p>
+  <p id="meth-p4"></p>
+  <p style="margin-top:14px">Full write-up: <a href="methodology.md">methodology.md</a> · Raw aggregate data: <a href="data/benchmark.json">data/benchmark.json</a> · Field-by-field dictionary: <a href="https://github.com/supersky0820/ai-visibility-benchmark#data-dictionary--databenchmarkjson">README</a></p>
+</section>
+
+<footer class="wrap">
+  <div class="links">
+    <a href="https://trirankai.com">Data by TriRank</a>
+    <a href="https://trirankai.com/data/ai-visibility-benchmark">Interactive version</a>
+    <a href="https://github.com/supersky0820/ai-visibility-benchmark">GitHub repo</a>
+  </div>
+  <p>Data: CC BY 4.0 (attribution + link to <a href="https://trirankai.com">trirankai.com</a>) · Code: MIT · Measured on Perplexity (sonar), July 2026.</p>
+  <noscript><p>Charts require JavaScript — the full dataset is in <a href="data/benchmark.json">data/benchmark.json</a> and summarized in the README.</p></noscript>
+</footer>
+
+<script>
+/* Single data source: exact copy of data/benchmark.json (injected at build; verified byte-equal). */
+const DATA = {
+  "meta": {
+    "brands": 101,
+    "okBrands": 101,
+    "categoriesTotal": 23,
+    "categoriesShown": 13,
+    "promptsPerBrand": 3,
+    "totalCitations": 2469,
+    "engine": "Perplexity (sonar)",
+    "collectedAt": "2026-07",
+    "minCategoryN": 4,
+    "minHostBrands": 5
+  },
+  "promptRates": [
+    {
+      "key": "brand",
+      "cited": 92,
+      "total": 101,
+      "rate": 91.1
+    },
+    {
+      "key": "reviews",
+      "cited": 57,
+      "total": 101,
+      "rate": 56.4
+    },
+    {
+      "key": "alternatives",
+      "cited": 56,
+      "total": 101,
+      "rate": 55.4
+    }
+  ],
+  "alternativesGap": {
+    "missed": 39,
+    "of": 92,
+    "rate": 42.4
+  },
+  "scores": {
+    "avg": 67.6,
+    "zero": 5,
+    "full": 42,
+    "of": 101,
+    "citedOn": {
+      "of": 101,
+      "dist": [
+        {
+          "cited": 0,
+          "n": 5
+        },
+        {
+          "cited": 1,
+          "n": 29
+        },
+        {
+          "cited": 2,
+          "n": 25
+        },
+        {
+          "cited": 3,
+          "n": 42
+        }
+      ]
+    }
+  },
+  "categories": [
+    {
+      "slug": "crm",
+      "n": 9,
+      "avgScore": 52,
+      "brandRate": 67,
+      "altRate": 56
+    },
+    {
+      "slug": "hr",
+      "n": 9,
+      "avgScore": 71,
+      "brandRate": 89,
+      "altRate": 56
+    },
+    {
+      "slug": "project-management",
+      "n": 9,
+      "avgScore": 63,
+      "brandRate": 89,
+      "altRate": 67
+    },
+    {
+      "slug": "design",
+      "n": 6,
+      "avgScore": 56,
+      "brandRate": 100,
+      "altRate": 50
+    },
+    {
+      "slug": "productivity",
+      "n": 6,
+      "avgScore": 55,
+      "brandRate": 100,
+      "altRate": 33
+    },
+    {
+      "slug": "analytics",
+      "n": 5,
+      "avgScore": 93,
+      "brandRate": 100,
+      "altRate": 80
+    },
+    {
+      "slug": "finance",
+      "n": 5,
+      "avgScore": 40,
+      "brandRate": 60,
+      "altRate": 20
+    },
+    {
+      "slug": "knowledge-base",
+      "n": 5,
+      "avgScore": 87,
+      "brandRate": 100,
+      "altRate": 80
+    },
+    {
+      "slug": "monitoring",
+      "n": 5,
+      "avgScore": 87,
+      "brandRate": 100,
+      "altRate": 80
+    },
+    {
+      "slug": "video",
+      "n": 5,
+      "avgScore": 33,
+      "brandRate": 80,
+      "altRate": 0
+    },
+    {
+      "slug": "automation",
+      "n": 4,
+      "avgScore": 42,
+      "brandRate": 100,
+      "altRate": 25
+    },
+    {
+      "slug": "dev-platform",
+      "n": 4,
+      "avgScore": 75,
+      "brandRate": 100,
+      "altRate": 50
+    },
+    {
+      "slug": "forms",
+      "n": 4,
+      "avgScore": 92,
+      "brandRate": 100,
+      "altRate": 75
+    }
+  ],
+  "sources": {
+    "top": [
+      {
+        "host": "reddit.com",
+        "share": 9.1,
+        "brands": 98
+      },
+      {
+        "host": "youtube.com",
+        "share": 8,
+        "brands": 89
+      },
+      {
+        "host": "g2.com",
+        "share": 3.9,
+        "brands": 73
+      },
+      {
+        "host": "trustpilot.com",
+        "share": 3.7,
+        "brands": 73
+      },
+      {
+        "host": "en.wikipedia.org",
+        "share": 2.5,
+        "brands": 55
+      },
+      {
+        "host": "linkedin.com",
+        "share": 1.9,
+        "brands": 45
+      },
+      {
+        "host": "glassdoor.com",
+        "share": 1.5,
+        "brands": 35
+      },
+      {
+        "host": "merriam-webster.com",
+        "share": 1.3,
+        "brands": 31
+      },
+      {
+        "host": "producthunt.com",
+        "share": 1.2,
+        "brands": 25
+      },
+      {
+        "host": "instagram.com",
+        "share": 1.1,
+        "brands": 28
+      },
+      {
+        "host": "facebook.com",
+        "share": 1.1,
+        "brands": 21
+      },
+      {
+        "host": "github.com",
+        "share": 1.1,
+        "brands": 18
+      },
+      {
+        "host": "capterra.com",
+        "share": 1.1,
+        "brands": 24
+      },
+      {
+        "host": "play.google.com",
+        "share": 1,
+        "brands": 22
+      },
+      {
+        "host": "apps.apple.com",
+        "share": 0.9,
+        "brands": 19
+      }
+    ],
+    "reviews": [
+      {
+        "host": "reddit.com",
+        "share": 11.4
+      },
+      {
+        "host": "youtube.com",
+        "share": 10.7
+      },
+      {
+        "host": "trustpilot.com",
+        "share": 8.7
+      },
+      {
+        "host": "g2.com",
+        "share": 7.5
+      },
+      {
+        "host": "glassdoor.com",
+        "share": 4.2
+      }
+    ],
+    "alternatives": [
+      {
+        "host": "reddit.com",
+        "share": 11
+      },
+      {
+        "host": "youtube.com",
+        "share": 4.8
+      },
+      {
+        "host": "g2.com",
+        "share": 2.3
+      },
+      {
+        "host": "thedigitalprojectmanager.com",
+        "share": 1.4
+      },
+      {
+        "host": "facebook.com",
+        "share": 1
+      }
+    ],
+    "selfShare": 10.2
+  }
+};
+
+const { meta, promptRates, alternativesGap, scores, categories, sources } = DATA;
+const fmt = new Intl.NumberFormat('en-US');
+const pct = (x) => Math.round(x);
+const month = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })
+  .format(new Date(meta.collectedAt + '-01T00:00:00Z'));
+const byKey = Object.fromEntries(promptRates.map(r => [r.key, r]));
+const brandsPct = (count) => Math.round((count / meta.brands) * 100);
+const hostRow = (h) => sources.top.find(s => s.host === h);
+
+const CATEGORY_LABELS = { crm: 'CRM', hr: 'HR' };
+const categoryLabel = (slug) => CATEGORY_LABELS[slug] ??
+  (slug.split('-').join(' ').replace(/^./, c => c.toUpperCase()));
+
+/* header meta line */
+document.getElementById('meta-line').textContent =
+  `Data collected ${month} · ${meta.brands} brands · ${fmt.format(meta.totalCitations)} structured citations · engine: ${meta.engine}`;
+
+/* stat cards */
+const thirdParty = pct(100 - sources.selfShare);
+const cards = [
+  [`${pct(byKey.brand.rate)}%`, 'of brands get cited when you ask AI about them by name'],
+  [`${pct(byKey.alternatives.rate)}%`, 'get cited when buyers ask AI for alternatives in their category'],
+  [`${pct(alternativesGap.rate)}%`, 'of brands AI clearly knows still vanish from alternatives answers'],
+  [`${thirdParty}%`, "of everything AI cites is third-party content, not the brand's own site"],
+];
+document.getElementById('stat-cards').innerHTML = cards
+  .map(([v, l]) => `<div class="card"><div class="big">${v}</div><p>${l}</p></div>`).join('');
+
+/* slope */
+document.getElementById('slope-body').textContent =
+  `Ask AI about a brand by name and it cites that brand's own site ${pct(byKey.brand.rate)}% of the time. Ask for reviews and it drops to ${pct(byKey.reviews.rate)}%. Ask for alternatives — the question a buyer asks right before choosing — and it drops to ${pct(byKey.alternatives.rate)}%.`;
+const barRow = (label, rate, detail) => `
+  <div class="bar-row">
+    <span class="bar-label">${label}</span>
+    <div class="bar-track"><div class="bar-fill" style="width:${rate}%"></div></div>
+    <span class="bar-val"><strong>${pct(rate)}%</strong> ${detail}</span>
+  </div>`;
+document.getElementById('slope-bars').innerHTML = [
+  ['Brand-name query', byKey.brand], ['Reviews query', byKey.reviews], ['Alternatives query', byKey.alternatives],
+].map(([l, r]) => barRow(l, r.rate, `(${r.cited}/${r.total})`)).join('');
+
+/* alternatives gap */
+document.getElementById('gap-title').textContent =
+  `The alternatives gap: ${pct(alternativesGap.rate)}% of known brands vanish`;
+document.getElementById('gap-big').textContent = `${pct(alternativesGap.rate)}%`;
+document.getElementById('gap-stat-label').textContent =
+  `${alternativesGap.missed} of ${alternativesGap.of} name-recognized brands were not cited on the alternatives query for their own category`;
+document.getElementById('gap-body1').textContent =
+  `We looked only at the brands the AI engine clearly knows — the ones it cites when asked about them by name. When we then asked for alternatives in their category, ${pct(alternativesGap.rate)}% of those same brands were nowhere in the cited sources.`;
+
+/* distribution */
+document.getElementById('dist-body').textContent =
+  `Out of the three queries per brand, ${scores.full} of ${scores.citedOn.of} brands were cited on all three — and ${scores.zero} were cited on none. The average visibility score is ${pct(scores.avg)} out of 100.`;
+const distLabels = ['Cited on 0 of 3 queries', 'Cited on 1 of 3', 'Cited on 2 of 3', 'Cited on all 3'];
+document.getElementById('dist-bars').innerHTML = [0, 1, 2, 3].map(k => {
+  const n = scores.citedOn.dist.find(d => d.cited === k)?.n ?? 0;
+  return barRow(distLabels[k], (n / scores.citedOn.of) * 100, `(${n} brands)`);
+}).join('');
+
+/* categories */
+const catScores = categories.map(c => c.avgScore);
+document.getElementById('cat-body').textContent =
+  `Average visibility score — the share of the three queries on which a brand gets cited — ranges from ${Math.min(...catScores)} to ${Math.max(...catScores)} across categories.`;
+document.getElementById('cat-rows').innerHTML = categories.map(c => `
+  <tr>
+    <td class="cat">${categoryLabel(c.slug)}</td>
+    <td class="num">${c.n}</td>
+    <td><span class="mini-track"><span class="mini-fill" style="width:${c.avgScore}%"></span></span><strong class="num">${c.avgScore}</strong></td>
+    <td class="num">${c.altRate}%</td>
+  </tr>`).join('');
+document.getElementById('cat-note').textContent =
+  `Showing ${meta.categoriesShown} of ${meta.categoriesTotal} categories — those with at least ${meta.minCategoryN} brands sampled. Scores are category averages; no per-brand data is published.`;
+
+/* sources */
+const reddit = hostRow('reddit.com'), youtube = hostRow('youtube.com');
+document.getElementById('src-body').textContent =
+  `Across ${fmt.format(meta.totalCitations)} structured citations, the single biggest sources are Reddit (${reddit.share}%) and YouTube (${youtube.share}%) — ahead of any review platform. Only ${sources.selfShare}% of all citations point at brand-owned domains: about ${thirdParty}% of what AI reads about a brand is content the brand does not control.`;
+const maxShare = sources.top[0].share;
+document.getElementById('src-rows').innerHTML = sources.top.map(s => `
+  <tr>
+    <td class="host">${s.host}</td>
+    <td><span class="mini-track"><span class="mini-fill" style="width:${(s.share / maxShare) * 100}%"></span></span><span class="num">${s.share}%</span></td>
+    <td class="num">${s.brands} / ${meta.brands}</td>
+    <td class="num"><strong>${brandsPct(s.brands)}%</strong></td>
+  </tr>`).join('');
+document.getElementById('src-note').textContent =
+  `Only hosts cited across at least ${meta.minHostBrands} different brands are listed, so no single brand's footprint can be reverse-engineered. brands% is derived: raw count ÷ ${meta.brands}.`;
+document.getElementById('slot-cards').innerHTML = [
+  ['Top sources on reviews queries', sources.reviews],
+  ['Top sources on alternatives queries', sources.alternatives],
+].map(([title, rows]) => `
+  <div class="slot-card"><h3>${title}</h3><ol>${rows.map((s, i) =>
+    `<li><span><span class="rank">${i + 1}</span>${s.host}</span><strong>${s.share}%</strong></li>`).join('')}</ol></div>`).join('');
+document.getElementById('metric-example').textContent =
+  `Example: Reddit appears for ${reddit.brands} of ${meta.brands} brands (${brandsPct(reddit.brands)} brands%) while owning ${reddit.share} share% of all citations. Same Reddit, two lenses — quote the one you mean.`;
+
+/* methodology */
+document.getElementById('meth-p1').textContent =
+  `Sample: ${meta.brands} established SaaS brands across ${meta.categoriesTotal} categories (project management, CRM, HR, analytics, design, finance and more). SEO/GEO tools were excluded from the seed list to avoid self-interest. Data collected ${month}.`;
+document.getElementById('meth-p2').textContent =
+  `For each brand we asked ${meta.engine} three questions a real buyer asks — the brand name, "[brand] reviews", and "[brand] alternatives" — and recorded the engine's structured citations. A brand counts as cited on a query only when its own domain appears among those structured sources; the answer prose is never parsed.`;
+document.getElementById('meth-p4').textContent =
+  `Anonymity: only aggregates are published. Categories appear only with ${meta.minCategoryN}+ brands sampled; source hosts only when cited across ${meta.minHostBrands}+ different brands.`;
+</script>
+</body>
+</html>

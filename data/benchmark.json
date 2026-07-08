@@ -1,0 +1,283 @@
+{
+  "meta": {
+    "brands": 101,
+    "okBrands": 101,
+    "categoriesTotal": 23,
+    "categoriesShown": 13,
+    "promptsPerBrand": 3,
+    "totalCitations": 2469,
+    "engine": "Perplexity (sonar)",
+    "collectedAt": "2026-07",
+    "minCategoryN": 4,
+    "minHostBrands": 5
+  },
+  "promptRates": [
+    {
+      "key": "brand",
+      "cited": 92,
+      "total": 101,
+      "rate": 91.1
+    },
+    {
+      "key": "reviews",
+      "cited": 57,
+      "total": 101,
+      "rate": 56.4
+    },
+    {
+      "key": "alternatives",
+      "cited": 56,
+      "total": 101,
+      "rate": 55.4
+    }
+  ],
+  "alternativesGap": {
+    "missed": 39,
+    "of": 92,
+    "rate": 42.4
+  },
+  "scores": {
+    "avg": 67.6,
+    "zero": 5,
+    "full": 42,
+    "of": 101,
+    "citedOn": {
+      "of": 101,
+      "dist": [
+        {
+          "cited": 0,
+          "n": 5
+        },
+        {
+          "cited": 1,
+          "n": 29
+        },
+        {
+          "cited": 2,
+          "n": 25
+        },
+        {
+          "cited": 3,
+          "n": 42
+        }
+      ]
+    }
+  },
+  "categories": [
+    {
+      "slug": "crm",
+      "n": 9,
+      "avgScore": 52,
+      "brandRate": 67,
+      "altRate": 56
+    },
+    {
+      "slug": "hr",
+      "n": 9,
+      "avgScore": 71,
+      "brandRate": 89,
+      "altRate": 56
+    },
+    {
+      "slug": "project-management",
+      "n": 9,
+      "avgScore": 63,
+      "brandRate": 89,
+      "altRate": 67
+    },
+    {
+      "slug": "design",
+      "n": 6,
+      "avgScore": 56,
+      "brandRate": 100,
+      "altRate": 50
+    },
+    {
+      "slug": "productivity",
+      "n": 6,
+      "avgScore": 55,
+      "brandRate": 100,
+      "altRate": 33
+    },
+    {
+      "slug": "analytics",
+      "n": 5,
+      "avgScore": 93,
+      "brandRate": 100,
+      "altRate": 80
+    },
+    {
+      "slug": "finance",
+      "n": 5,
+      "avgScore": 40,
+      "brandRate": 60,
+      "altRate": 20
+    },
+    {
+      "slug": "knowledge-base",
+      "n": 5,
+      "avgScore": 87,
+      "brandRate": 100,
+      "altRate": 80
+    },
+    {
+      "slug": "monitoring",
+      "n": 5,
+      "avgScore": 87,
+      "brandRate": 100,
+      "altRate": 80
+    },
+    {
+      "slug": "video",
+      "n": 5,
+      "avgScore": 33,
+      "brandRate": 80,
+      "altRate": 0
+    },
+    {
+      "slug": "automation",
+      "n": 4,
+      "avgScore": 42,
+      "brandRate": 100,
+      "altRate": 25
+    },
+    {
+      "slug": "dev-platform",
+      "n": 4,
+      "avgScore": 75,
+      "brandRate": 100,
+      "altRate": 50
+    },
+    {
+      "slug": "forms",
+      "n": 4,
+      "avgScore": 92,
+      "brandRate": 100,
+      "altRate": 75
+    }
+  ],
+  "sources": {
+    "top": [
+      {
+        "host": "reddit.com",
+        "share": 9.1,
+        "brands": 98
+      },
+      {
+        "host": "youtube.com",
+        "share": 8,
+        "brands": 89
+      },
+      {
+        "host": "g2.com",
+        "share": 3.9,
+        "brands": 73
+      },
+      {
+        "host": "trustpilot.com",
+        "share": 3.7,
+        "brands": 73
+      },
+      {
+        "host": "en.wikipedia.org",
+        "share": 2.5,
+        "brands": 55
+      },
+      {
+        "host": "linkedin.com",
+        "share": 1.9,
+        "brands": 45
+      },
+      {
+        "host": "glassdoor.com",
+        "share": 1.5,
+        "brands": 35
+      },
+      {
+        "host": "merriam-webster.com",
+        "share": 1.3,
+        "brands": 31
+      },
+      {
+        "host": "producthunt.com",
+        "share": 1.2,
+        "brands": 25
+      },
+      {
+        "host": "instagram.com",
+        "share": 1.1,
+        "brands": 28
+      },
+      {
+        "host": "facebook.com",
+        "share": 1.1,
+        "brands": 21
+      },
+      {
+        "host": "github.com",
+        "share": 1.1,
+        "brands": 18
+      },
+      {
+        "host": "capterra.com",
+        "share": 1.1,
+        "brands": 24
+      },
+      {
+        "host": "play.google.com",
+        "share": 1,
+        "brands": 22
+      },
+      {
+        "host": "apps.apple.com",
+        "share": 0.9,
+        "brands": 19
+      }
+    ],
+    "reviews": [
+      {
+        "host": "reddit.com",
+        "share": 11.4
+      },
+      {
+        "host": "youtube.com",
+        "share": 10.7
+      },
+      {
+        "host": "trustpilot.com",
+        "share": 8.7
+      },
+      {
+        "host": "g2.com",
+        "share": 7.5
+      },
+      {
+        "host": "glassdoor.com",
+        "share": 4.2
+      }
+    ],
+    "alternatives": [
+      {
+        "host": "reddit.com",
+        "share": 11
+      },
+      {
+        "host": "youtube.com",
+        "share": 4.8
+      },
+      {
+        "host": "g2.com",
+        "share": 2.3
+      },
+      {
+        "host": "thedigitalprojectmanager.com",
+        "share": 1.4
+      },
+      {
+        "host": "facebook.com",
+        "share": 1
+      }
+    ],
+    "selfShare": 10.2
+  }
+}
