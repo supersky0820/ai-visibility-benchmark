@@ -6,176 +6,248 @@
 <title>AI Search Visibility of 101 SaaS Brands — Measured on Perplexity | TriRank Data</title>
 <meta name="description" content="Open dataset: how often an AI answer engine cites 101 SaaS brands on brand, reviews and alternatives queries — measured on Perplexity (sonar), July 2026. Anonymous aggregate; 2,469 structured citations.">
 <style>
+  /* Palette: concrete literals lifted from TriRank design-tokens.css
+     (cross-origin static page — no shared CSS; source token noted per line) */
   :root{
-    --brand:#1E48C8; --brand-dark:#16368f;
-    --ink:#0f172a; --ink-2:#334155; --muted:#64748b; --faint:#94a3b8;
-    --bg:#ffffff; --bg-subtle:#f8fafc; --bg-muted:#f1f5f9; --border:#e2e8f0;
-    --radius:12px;
+    --brand-500:#3568F4;   /* --brand-500  (link/focus accent) */
+    --brand-700:#1E48C8;   /* --brand-700  (bar fills, key figures) */
+    --brand-900:#14296E;   /* --brand-900  (dark hero; master --action-primary) */
+    --accent-500:#10B981;  /* --accent-500 (ONLY the "Cited on all 3" bar — cited/success) */
+    --ink-900:#0F172A; --ink-700:#334155; --ink-500:#475569; --ink-300:#94A3B8;
+    --bg:#FFFFFF;          /* --surface-base */
+    --bg-muted:#F6F8FC;    /* --surface-muted */
+    --bg-subtle:#EEF2F9;   /* --surface-subtle (bar tracks) */
+    --border:#E3E9F4;      /* --border-subtle */
+    --border-strong:#CBD6E8; /* --border-strong (bar gridlines) */
+    --radius-md:8px; --radius-lg:12px; --radius-xl:16px; --radius-pill:999px; /* --tr-radius-* */
+    --shadow-sm:0 1px 2px rgba(20,41,110,.06),0 1px 3px rgba(20,41,110,.08);   /* --tr-shadow-sm */
+    --shadow-md:0 2px 4px rgba(20,41,110,.06),0 8px 16px rgba(20,41,110,.08);  /* --tr-shadow-md */
+    --shadow-lg:0 8px 24px rgba(20,41,110,.1),0 24px 48px rgba(20,41,110,.12); /* --tr-shadow-lg */
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    color:var(--ink-2);background:var(--bg);line-height:1.6;
+    color:var(--ink-700);background:var(--bg);line-height:1.6;
   }
   .wrap{max-width:960px;margin:0 auto;padding:0 24px}
-  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
-  a{color:var(--brand)}
-  h1,h2,h3{color:var(--ink);line-height:1.25;letter-spacing:-0.01em}
-  h2{font-size:1.6rem;margin-bottom:.6rem}
-  section{padding:48px 0;border-bottom:1px solid var(--border)}
-  .eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
-  .lede{color:var(--muted);font-size:1.05rem;max-width:46rem;margin-top:.6rem}
-  .meta-line{margin-top:14px;font-size:.8rem;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-  .note{margin-top:20px;max-width:46rem;background:var(--bg-muted);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;font-size:.9rem}
-  .note strong{color:var(--ink)}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
+  a{color:var(--brand-700)}
+  h1,h2,h3{color:var(--ink-900);line-height:1.25;letter-spacing:-0.02em} /* --tr-tracking-tight */
+  h2{font-size:1.5rem} /* --tr-text-lg */
+  .kicker{display:block;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-700);margin-bottom:10px}
+  .lede{color:var(--ink-500);font-size:1.02rem;max-width:46rem;margin-top:.7rem}
+  section{padding:56px 0}
+  .alt{background:var(--bg-muted)}
 
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:8px}
-  .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);padding:18px}
-  .card .big{font-size:2.1rem;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums}
-  .card p{margin-top:6px;font-size:.85rem;color:var(--muted);line-height:1.45}
+  /* ---- hero (dark, brand-900) ---- */
+  .hero{
+    background:var(--brand-900);
+    background-image:radial-gradient(640px 320px at 88% -12%, rgba(53,104,244,.35), transparent 70%); /* brand-500 glow */
+    padding:72px 0 116px;color:#fff;
+  }
+  .hero .eyebrow{display:flex;align-items:center;gap:10px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+  .hero .eyebrow::before{content:"";width:22px;height:3px;border-radius:var(--radius-pill);background:var(--brand-500)}
+  .hero h1{color:#fff;font-size:clamp(1.9rem,4.6vw,2.75rem);font-weight:800;margin-top:16px;max-width:44rem} /* --tr-text-2xl cap */
+  .hero .lede{color:rgba(255,255,255,.78)}
+  .meta-line{margin-top:16px;font-size:.78rem;color:rgba(255,255,255,.65);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .note{margin-top:24px;max-width:46rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius-lg);padding:14px 18px;font-size:.88rem;color:rgba(255,255,255,.85)}
+  .note strong{color:#fff}
 
-  .bars{display:flex;flex-direction:column;gap:14px;margin-top:24px}
-  .bar-row{display:flex;align-items:center;gap:12px}
-  .bar-label{flex:0 0 200px;font-size:.9rem}
-  .bar-track{flex:1;height:10px;background:var(--bg-muted);border-radius:999px;overflow:hidden}
-  .bar-fill{height:100%;background:var(--brand);border-radius:999px}
-  .bar-val{flex:0 0 110px;text-align:right;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
-  .bar-val strong{color:var(--ink)}
+  /* ---- stat cards overlapping hero ---- */
+  .stats{padding:0;margin-top:-56px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+  .card{border:1px solid var(--border);border-radius:var(--radius-xl);background:var(--bg);padding:20px;box-shadow:var(--shadow-md)}
+  .card .big{font-size:2.75rem;font-weight:800;color:var(--brand-700);line-height:1.1;font-variant-numeric:tabular-nums} /* --tr-text-2xl */
+  .card p{margin-top:8px;font-size:.84rem;color:var(--ink-500);line-height:1.45}
 
-  .gap-flex{display:flex;gap:24px;align-items:center;margin-top:22px;flex-wrap:wrap}
-  .gap-stat{border:1px solid var(--border);background:var(--bg-muted);border-radius:var(--radius);padding:22px 30px;text-align:center}
-  .gap-stat .big{font-size:3rem;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
-  .gap-stat p{font-size:.75rem;color:var(--muted);max-width:200px;margin:6px auto 0}
+  /* ---- SVG bar rows ---- */
+  .bars{display:flex;flex-direction:column;gap:16px;margin-top:28px;max-width:46rem}
+  .bar-row{display:flex;align-items:center;gap:14px}
+  .bar-label{flex:0 0 190px;font-size:.9rem;color:var(--ink-700)}
+  .bar-svg{flex:1;width:100%;display:block;min-width:0}
+  .bar-svg .bt{fill:var(--bg-subtle)}
+  .bar-svg .gl{stroke:var(--border-strong);stroke-width:1}
+  .bar-svg .bf{fill:var(--brand-700)}
+  .bar-svg .bf.acc{fill:var(--accent-500)}
+  .bar-val{flex:0 0 112px;text-align:right;font-size:.85rem;color:var(--ink-500);font-variant-numeric:tabular-nums}
+  .bar-val strong{color:var(--ink-900);font-size:.95rem}
+
+  /* ---- gap callout ---- */
+  .gap-flex{display:flex;gap:28px;align-items:center;margin-top:26px;flex-wrap:wrap}
+  .gap-stat{background:var(--brand-900);border-radius:var(--radius-xl);padding:26px 34px;text-align:center;box-shadow:var(--shadow-lg)}
+  .gap-stat .big{font-size:3.4rem;font-weight:800;color:#fff;line-height:1.05;font-variant-numeric:tabular-nums}
+  .gap-stat p{font-size:.74rem;color:rgba(255,255,255,.75);max-width:210px;margin:8px auto 0;line-height:1.45}
   .gap-body{flex:1;min-width:280px;max-width:560px}
   .gap-body p+p{margin-top:10px}
 
-  .tbl-wrap{overflow-x:auto;margin-top:22px}
+  /* ---- tables ---- */
+  .tbl-wrap{overflow-x:auto;margin-top:26px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg)}
   table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:560px}
-  th{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--border)}
-  td{padding:9px 12px 9px 0;border-bottom:1px solid var(--border);vertical-align:middle}
-  td.host,td.cat{font-weight:600;color:var(--ink)}
-  td .mini-track{display:inline-block;width:110px;height:8px;background:var(--bg-muted);border-radius:999px;overflow:hidden;vertical-align:middle;margin-right:10px}
-  td .mini-fill{display:block;height:100%;background:var(--brand);border-radius:999px}
-  td .num{font-variant-numeric:tabular-nums}
-  .tbl-note{margin-top:10px;font-size:.78rem;color:var(--muted)}
+  th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-500);text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg-muted)}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:nth-child(even){background:var(--bg-muted)}
+  td.host,td.cat{font-weight:600;color:var(--ink-900)}
+  td.rk{color:var(--ink-300);font-variant-numeric:tabular-nums;width:2.2em}
+  .num{font-variant-numeric:tabular-nums}
+  td.bp{font-weight:700;color:var(--brand-700);font-variant-numeric:tabular-nums}
+  td.bcell{white-space:nowrap}
+  .mini-svg{width:130px;height:10px;vertical-align:middle;margin-right:10px}
+  .mini-svg .bt{fill:var(--bg-subtle)}
+  .mini-svg .bf{fill:var(--brand-700)}
+  .tbl-note{margin-top:12px;font-size:.78rem;color:var(--ink-500)}
 
-  .grid-2{display:grid;grid-template-columns:1fr;gap:18px;margin-top:22px}
-  @media(min-width:760px){.grid-2{grid-template-columns:1fr 300px}}
-  .slot-card{border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+  /* ---- sources side cards ---- */
+  .grid-2{display:grid;grid-template-columns:1fr;gap:18px;margin-top:26px}
+  @media(min-width:760px){.grid-2{grid-template-columns:1fr 300px}.grid-2 .tbl-wrap{margin-top:0}}
+  .slot-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;background:var(--bg);box-shadow:var(--shadow-sm)}
   .slot-card h3{font-size:.95rem;margin-bottom:10px}
   .slot-card ol{list-style:none}
-  .slot-card li{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;padding:4px 0}
-  .slot-card li .rank{color:var(--faint);margin-right:8px;font-variant-numeric:tabular-nums}
-  .slot-card li strong{font-variant-numeric:tabular-nums;color:var(--ink)}
+  .slot-card li{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;padding:5px 0;border-bottom:1px dashed var(--border)}
+  .slot-card li:last-child{border-bottom:0}
+  .slot-card li .rank{color:var(--ink-300);margin-right:8px;font-variant-numeric:tabular-nums}
+  .slot-card li strong{font-variant-numeric:tabular-nums;color:var(--ink-900)}
 
-  .metric-box{margin-top:26px;border:1px solid var(--border);border-left:4px solid var(--brand);border-radius:var(--radius);padding:18px 20px;background:var(--bg-subtle);font-size:.92rem}
+  .metric-box{margin-top:28px;border:1px solid var(--border);border-left:4px solid var(--brand-500);border-radius:var(--radius-lg);padding:18px 20px;background:var(--bg-muted);font-size:.92rem}
   .metric-box h3{font-size:1rem;margin-bottom:8px}
   .metric-box p+p{margin-top:8px}
 
   .methodology p+p{margin-top:10px}
-  .methodology{max-width:46rem}
+  .methodology .inner{max-width:46rem}
 
-  footer{padding:36px 0 60px;font-size:.9rem;color:var(--muted)}
-  footer .links{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px}
+  footer{padding:36px 0 60px;font-size:.9rem;color:var(--ink-500);border-top:1px solid var(--border)}
+  footer .links{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:12px}
   footer a{font-weight:600}
+
+  /* ---- narrow screens ---- */
   @media(max-width:600px){
-    .bar-label{flex-basis:120px;font-size:.8rem}
-    .bar-val{flex-basis:86px;font-size:.78rem}
-    h2{font-size:1.35rem}
+    section{padding:44px 0}
+    .hero{padding:56px 0 104px}
+    .bar-row{display:grid;grid-template-columns:1fr auto;gap:5px 10px;align-items:end}
+    .bar-label{flex:none;font-size:.82rem}
+    .bar-val{flex:none;font-size:.8rem}
+    .bar-svg{grid-column:1/-1}
+    .cards{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+    .card .big{font-size:2.1rem}
+    .gap-stat{padding:20px 26px}
+    .gap-stat .big{font-size:2.6rem}
+    h2{font-size:1.3rem}
   }
 </style>
 </head>
 <body>
 
-<section class="wrap" id="top">
-  <span class="eyebrow">TriRank Data · Open Dataset</span>
-  <h1 style="font-size:2.1rem;margin-top:10px;max-width:44rem">AI Search Visibility of 101 SaaS Brands — Measured on Perplexity</h1>
-  <p class="lede">We asked an AI answer engine about 101 SaaS brands across 23 categories — the brand itself, its reviews, and its alternatives — and recorded which sources it actually cited. This is the anonymous, aggregate picture of AI search visibility in mid-2026.</p>
-  <p class="meta-line" id="meta-line"></p>
-  <div class="note"><strong>Anonymous by design:</strong> this benchmark publishes aggregate numbers only. No per-brand results are released and no brands are ranked — the point is how the AI recommendation mechanism behaves, not who wins.</div>
+<section class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow">TriRank Data · Open Dataset</span>
+    <h1>AI Search Visibility of 101 SaaS Brands — Measured on Perplexity</h1>
+    <p class="lede">We asked an AI answer engine about 101 SaaS brands across 23 categories — the brand itself, its reviews, and its alternatives — and recorded which sources it actually cited. This is the anonymous, aggregate picture of AI search visibility in mid-2026.</p>
+    <p class="meta-line" id="meta-line"></p>
+    <div class="note"><strong>Anonymous by design:</strong> this benchmark publishes aggregate numbers only. No per-brand results are released and no brands are ranked — the point is how the AI recommendation mechanism behaves, not who wins.</div>
+  </div>
 </section>
 
-<section class="wrap">
-  <div class="cards" id="stat-cards"></div>
+<section class="stats">
+  <div class="wrap"><div class="cards" id="stat-cards"></div></div>
 </section>
 
-<section class="wrap">
-  <h2>The visibility slope: AI knows you — until money is on the line</h2>
-  <p class="lede" id="slope-body"></p>
-  <div class="bars" id="slope-bars"></div>
+<section>
+  <div class="wrap">
+    <span class="kicker">01 · Citation rates</span>
+    <h2>The visibility slope: AI knows you — until money is on the line</h2>
+    <p class="lede" id="slope-body"></p>
+    <div class="bars" id="slope-bars"></div>
+  </div>
 </section>
 
-<section class="wrap">
-  <h2 id="gap-title"></h2>
-  <div class="gap-flex">
-    <div class="gap-stat">
-      <div class="big" id="gap-big"></div>
-      <p id="gap-stat-label"></p>
-    </div>
-    <div class="gap-body">
-      <p id="gap-body1"></p>
-      <p>Being well-known is not enough. AI assembles alternatives answers from third-party comparison content — community threads, listicles, review platforms — and a brand that is absent from those surfaces is absent from the answer, no matter how big its name is.</p>
+<section class="alt">
+  <div class="wrap">
+    <span class="kicker">02 · The gap</span>
+    <h2 id="gap-title"></h2>
+    <div class="gap-flex">
+      <div class="gap-stat">
+        <div class="big" id="gap-big"></div>
+        <p id="gap-stat-label"></p>
+      </div>
+      <div class="gap-body">
+        <p id="gap-body1"></p>
+        <p>Being well-known is not enough. AI assembles alternatives answers from third-party comparison content — community threads, listicles, review platforms — and a brand that is absent from those surfaces is absent from the answer, no matter how big its name is.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="wrap">
-  <h2>How many queries does a brand actually win?</h2>
-  <p class="lede" id="dist-body"></p>
-  <div class="bars" id="dist-bars"></div>
-</section>
-
-<section class="wrap">
-  <h2>Coverage is wildly uneven across categories</h2>
-  <p class="lede" id="cat-body"></p>
-  <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Category</th><th>Brands sampled</th><th>Avg visibility score</th><th>Cited on alternatives</th></tr></thead>
-      <tbody id="cat-rows"></tbody>
-    </table>
+<section>
+  <div class="wrap">
+    <span class="kicker">03 · Distribution</span>
+    <h2>How many queries does a brand actually win?</h2>
+    <p class="lede" id="dist-body"></p>
+    <div class="bars" id="dist-bars"></div>
   </div>
-  <p class="tbl-note" id="cat-note"></p>
 </section>
 
-<section class="wrap">
-  <h2>Where AI actually looks: Reddit and YouTube dominate</h2>
-  <p class="lede" id="src-body"></p>
-  <div class="grid-2">
-    <div class="tbl-wrap" style="margin-top:0">
+<section class="alt">
+  <div class="wrap">
+    <span class="kicker">04 · Categories</span>
+    <h2>Coverage is wildly uneven across categories</h2>
+    <p class="lede" id="cat-body"></p>
+    <div class="tbl-wrap">
       <table>
-        <thead><tr><th>Source</th><th>Share of all citations (share%)</th><th>Cited for # brands</th><th>brands%</th></tr></thead>
-        <tbody id="src-rows"></tbody>
+        <thead><tr><th>Category</th><th>Brands sampled</th><th>Avg visibility score</th><th>Cited on alternatives</th></tr></thead>
+        <tbody id="cat-rows"></tbody>
       </table>
     </div>
-    <div style="display:flex;flex-direction:column;gap:16px" id="slot-cards"></div>
-  </div>
-  <p class="tbl-note" id="src-note"></p>
-
-  <div class="metric-box">
-    <h3>brands% vs share% — two lenses, not interchangeable</h3>
-    <p><strong>brands%</strong> = coverage breadth: the number of brands (out of 101) for which a source was cited at least once, ÷ 101. Derived from the raw count in <code>sources.top[].brands</code>.</p>
-    <p><strong>share%</strong> = citation share: a source's citations ÷ all citations. Stored directly in <code>sources.top[].share</code>.</p>
-    <p id="metric-example"></p>
+    <p class="tbl-note" id="cat-note"></p>
   </div>
 </section>
 
-<section class="wrap methodology">
-  <h2>Methodology</h2>
-  <p id="meth-p1"></p>
-  <p id="meth-p2"></p>
-  <p>Honesty rules: failed calls are recorded as unknown and excluded from every denominator — never counted as "not cited". In this run, all brands completed all three queries.</p>
-  <p id="meth-p4"></p>
-  <p style="margin-top:14px">Full write-up: <a href="methodology.md">methodology.md</a> · Raw aggregate data: <a href="data/benchmark.json">data/benchmark.json</a> · Field-by-field dictionary: <a href="https://github.com/supersky0820/ai-visibility-benchmark#data-dictionary--databenchmarkjson">README</a></p>
+<section>
+  <div class="wrap">
+    <span class="kicker">05 · Sources</span>
+    <h2>Where AI actually looks: Reddit and YouTube dominate</h2>
+    <p class="lede" id="src-body"></p>
+    <div class="grid-2">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th class="rk">#</th><th>Source</th><th>Share of all citations (share%)</th><th>Cited for # brands</th><th>brands%</th></tr></thead>
+          <tbody id="src-rows"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px" id="slot-cards"></div>
+    </div>
+    <p class="tbl-note" id="src-note"></p>
+
+    <div class="metric-box">
+      <h3>brands% vs share% — two lenses, not interchangeable</h3>
+      <p><strong>brands%</strong> = coverage breadth: the number of brands (out of 101) for which a source was cited at least once, ÷ 101. Derived from the raw count in <code>sources.top[].brands</code>.</p>
+      <p><strong>share%</strong> = citation share: a source's citations ÷ all citations. Stored directly in <code>sources.top[].share</code>.</p>
+      <p id="metric-example"></p>
+    </div>
+  </div>
 </section>
 
-<footer class="wrap">
-  <div class="links">
-    <a href="https://trirankai.com">Data by TriRank</a>
-    <a href="https://trirankai.com/data/ai-visibility-benchmark">Interactive version</a>
-    <a href="https://github.com/supersky0820/ai-visibility-benchmark">GitHub repo</a>
+<section class="alt methodology">
+  <div class="wrap"><div class="inner">
+    <span class="kicker">06 · Methodology</span>
+    <h2>Methodology</h2>
+    <p id="meth-p1" style="margin-top:14px"></p>
+    <p id="meth-p2"></p>
+    <p>Honesty rules: failed calls are recorded as unknown and excluded from every denominator — never counted as "not cited". In this run, all brands completed all three queries.</p>
+    <p id="meth-p4"></p>
+    <p style="margin-top:14px">Full write-up: <a href="methodology.md">methodology.md</a> · Raw aggregate data: <a href="data/benchmark.json">data/benchmark.json</a> · Field-by-field dictionary: <a href="https://github.com/supersky0820/ai-visibility-benchmark#data-dictionary--databenchmarkjson">README</a></p>
+  </div></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="https://trirankai.com">Data by TriRank</a>
+      <a href="https://trirankai.com/data/ai-visibility-benchmark">Interactive version</a>
+      <a href="https://github.com/supersky0820/ai-visibility-benchmark">GitHub repo</a>
+    </div>
+    <p>Data: CC BY 4.0 (attribution + link to <a href="https://trirankai.com">trirankai.com</a>) · Code: MIT · Measured on Perplexity (sonar), July 2026.</p>
+    <noscript><p>Charts require JavaScript — the full dataset is in <a href="data/benchmark.json">data/benchmark.json</a> and summarized in the README.</p></noscript>
   </div>
-  <p>Data: CC BY 4.0 (attribution + link to <a href="https://trirankai.com">trirankai.com</a>) · Code: MIT · Measured on Perplexity (sonar), July 2026.</p>
-  <noscript><p>Charts require JavaScript — the full dataset is in <a href="data/benchmark.json">data/benchmark.json</a> and summarized in the README.</p></noscript>
 </footer>
 
 <script>
@@ -477,6 +549,28 @@ const CATEGORY_LABELS = { crm: 'CRM', hr: 'HR' };
 const categoryLabel = (slug) => CATEGORY_LABELS[slug] ??
   (slug.split('-').join(' ').replace(/^./, c => c.toUpperCase()));
 
+/* Static SVG bar: track + 25/50/75 gridlines + rounded fill. No animation. */
+const svgBar = (rate, cls) => `
+  <svg class="bar-svg" height="14" aria-hidden="true">
+    <rect class="bt" x="0" y="1" width="100%" height="12" rx="6"></rect>
+    <line class="gl" x1="25%" x2="25%" y1="1" y2="13"></line>
+    <line class="gl" x1="50%" x2="50%" y1="1" y2="13"></line>
+    <line class="gl" x1="75%" x2="75%" y1="1" y2="13"></line>
+    <rect class="bf${cls ? ' ' + cls : ''}" x="0" y="1" width="${rate}%" height="12" rx="6"></rect>
+  </svg>`;
+const barRow = (label, rate, detail, cls) => `
+  <div class="bar-row">
+    <span class="bar-label">${label}</span>
+    <span class="bar-val"><strong>${pct(rate)}%</strong> ${detail}</span>
+    ${svgBar(rate, cls)}
+  </div>`;
+/* Table mini-bar (fixed-width track, % fill) */
+const miniBar = (fillPct) => `
+  <svg class="mini-svg" aria-hidden="true">
+    <rect class="bt" width="100%" height="10" rx="5"></rect>
+    <rect class="bf" width="${fillPct}%" height="10" rx="5"></rect>
+  </svg>`;
+
 /* header meta line */
 document.getElementById('meta-line').textContent =
   `Data collected ${month} · ${meta.brands} brands · ${fmt.format(meta.totalCitations)} structured citations · engine: ${meta.engine}`;
@@ -495,12 +589,6 @@ document.getElementById('stat-cards').innerHTML = cards
 /* slope */
 document.getElementById('slope-body').textContent =
   `Ask AI about a brand by name and it cites that brand's own site ${pct(byKey.brand.rate)}% of the time. Ask for reviews and it drops to ${pct(byKey.reviews.rate)}%. Ask for alternatives — the question a buyer asks right before choosing — and it drops to ${pct(byKey.alternatives.rate)}%.`;
-const barRow = (label, rate, detail) => `
-  <div class="bar-row">
-    <span class="bar-label">${label}</span>
-    <div class="bar-track"><div class="bar-fill" style="width:${rate}%"></div></div>
-    <span class="bar-val"><strong>${pct(rate)}%</strong> ${detail}</span>
-  </div>`;
 document.getElementById('slope-bars').innerHTML = [
   ['Brand-name query', byKey.brand], ['Reviews query', byKey.reviews], ['Alternatives query', byKey.alternatives],
 ].map(([l, r]) => barRow(l, r.rate, `(${r.cited}/${r.total})`)).join('');
@@ -514,13 +602,13 @@ document.getElementById('gap-stat-label').textContent =
 document.getElementById('gap-body1').textContent =
   `We looked only at the brands the AI engine clearly knows — the ones it cites when asked about them by name. When we then asked for alternatives in their category, ${pct(alternativesGap.rate)}% of those same brands were nowhere in the cited sources.`;
 
-/* distribution */
+/* distribution — accent-500 ONLY on the "Cited on all 3" (cited/success) bar */
 document.getElementById('dist-body').textContent =
   `Out of the three queries per brand, ${scores.full} of ${scores.citedOn.of} brands were cited on all three — and ${scores.zero} were cited on none. The average visibility score is ${pct(scores.avg)} out of 100.`;
 const distLabels = ['Cited on 0 of 3 queries', 'Cited on 1 of 3', 'Cited on 2 of 3', 'Cited on all 3'];
 document.getElementById('dist-bars').innerHTML = [0, 1, 2, 3].map(k => {
   const n = scores.citedOn.dist.find(d => d.cited === k)?.n ?? 0;
-  return barRow(distLabels[k], (n / scores.citedOn.of) * 100, `(${n} brands)`);
+  return barRow(distLabels[k], (n / scores.citedOn.of) * 100, `(${n} brands)`, k === 3 ? 'acc' : '');
 }).join('');
 
 /* categories */
@@ -531,7 +619,7 @@ document.getElementById('cat-rows').innerHTML = categories.map(c => `
   <tr>
     <td class="cat">${categoryLabel(c.slug)}</td>
     <td class="num">${c.n}</td>
-    <td><span class="mini-track"><span class="mini-fill" style="width:${c.avgScore}%"></span></span><strong class="num">${c.avgScore}</strong></td>
+    <td class="bcell">${miniBar(c.avgScore)}<strong class="num">${c.avgScore}</strong></td>
     <td class="num">${c.altRate}%</td>
   </tr>`).join('');
 document.getElementById('cat-note').textContent =
@@ -542,12 +630,13 @@ const reddit = hostRow('reddit.com'), youtube = hostRow('youtube.com');
 document.getElementById('src-body').textContent =
   `Across ${fmt.format(meta.totalCitations)} structured citations, the single biggest sources are Reddit (${reddit.share}%) and YouTube (${youtube.share}%) — ahead of any review platform. Only ${sources.selfShare}% of all citations point at brand-owned domains: about ${thirdParty}% of what AI reads about a brand is content the brand does not control.`;
 const maxShare = sources.top[0].share;
-document.getElementById('src-rows').innerHTML = sources.top.map(s => `
+document.getElementById('src-rows').innerHTML = sources.top.map((s, i) => `
   <tr>
+    <td class="rk">${i + 1}</td>
     <td class="host">${s.host}</td>
-    <td><span class="mini-track"><span class="mini-fill" style="width:${(s.share / maxShare) * 100}%"></span></span><span class="num">${s.share}%</span></td>
+    <td class="bcell">${miniBar((s.share / maxShare) * 100)}<span class="num">${s.share}%</span></td>
     <td class="num">${s.brands} / ${meta.brands}</td>
-    <td class="num"><strong>${brandsPct(s.brands)}%</strong></td>
+    <td class="bp">${brandsPct(s.brands)}%</td>
   </tr>`).join('');
 document.getElementById('src-note').textContent =
   `Only hosts cited across at least ${meta.minHostBrands} different brands are listed, so no single brand's footprint can be reverse-engineered. brands% is derived: raw count ÷ ${meta.brands}.`;
